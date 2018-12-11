@@ -80,7 +80,7 @@ NOTE: List all references recursively by using the flag '-r'.
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}

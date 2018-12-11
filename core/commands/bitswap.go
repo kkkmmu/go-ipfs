@@ -74,7 +74,7 @@ Print out all blocks currently on the bitswap wantlist for the local peer.`,
 	},
 	Encoders: cmds.EncoderMap{
 		cmds.Text: cmds.MakeTypedEncoder(func(req *cmds.Request, w io.Writer, out *KeyList) error {
-			enc, err := cmdenv.ProcCidBaseLowLevel(req)
+			enc, err := cmdenv.GetLowLevelCidEncoder(req)
 			if err != nil {
 				return err
 			}
@@ -118,7 +118,7 @@ var bitswapStatCmd = &cmds.Command{
 	},
 	Encoders: cmds.EncoderMap{
 		cmds.Text: cmds.MakeTypedEncoder(func(req *cmds.Request, w io.Writer, s *bitswap.Stat) error {
-			enc, err := cmdenv.ProcCidBaseLowLevel(req)
+			enc, err := cmdenv.GetLowLevelCidEncoder(req)
 			if err != nil {
 				return err
 			}

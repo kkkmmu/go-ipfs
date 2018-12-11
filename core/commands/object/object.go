@@ -119,7 +119,7 @@ multihash.
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBaseLowLevel(req)
+		enc, err := cmdenv.GetLowLevelCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -214,7 +214,7 @@ Supported values are:
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBaseLowLevel(req)
+		enc, err := cmdenv.GetLowLevelCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -309,7 +309,7 @@ var ObjectStatCmd = &cmds.Command{
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBaseLowLevel(req)
+		enc, err := cmdenv.GetLowLevelCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -406,7 +406,7 @@ And then run:
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBaseLowLevel(req)
+		enc, err := cmdenv.GetLowLevelCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -484,7 +484,7 @@ Available templates:
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBaseLowLevel(req)
+		enc, err := cmdenv.GetLowLevelCidEncoder(req)
 		if err != nil {
 			return err
 		}

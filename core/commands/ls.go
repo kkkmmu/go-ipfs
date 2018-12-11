@@ -94,7 +94,7 @@ The JSON output contains type information.
 		}
 		paths := req.Arguments
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}

@@ -88,7 +88,7 @@ var addPinCmd = &cmds.Command{
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -221,7 +221,7 @@ collected if needed. (By default, recursively. Use -r=false for direct pins.)
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -322,7 +322,7 @@ Example:
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -443,7 +443,7 @@ var verifyPinCmd = &cmds.Command{
 			return fmt.Errorf("the --verbose and --quiet options can not be used at the same time")
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}

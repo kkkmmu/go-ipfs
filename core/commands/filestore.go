@@ -80,7 +80,7 @@ The output is:
 	},
 	PostRun: cmds.PostRunMap{
 		cmds.CLI: func(res cmds.Response, re cmds.ResponseEmitter) error {
-			enc, err := cmdenv.ProcCidBase(res.Request())
+			enc, err := cmdenv.GetCidEncoder(res.Request())
 			if err != nil {
 				return err
 			}
@@ -157,7 +157,7 @@ For ERROR entries the error will also be printed to stderr.
 	},
 	PostRun: cmds.PostRunMap{
 		cmds.CLI: func(res cmds.Response, re cmds.ResponseEmitter) error {
-			enc, err := cmdenv.ProcCidBase(res.Request())
+			enc, err := cmdenv.GetCidEncoder(res.Request())
 			if err != nil {
 				return err
 			}
@@ -196,7 +196,7 @@ var dupsFileStore = &cmds.Command{
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}

@@ -137,7 +137,7 @@ var filesStatCmd = &cmds.Command{
 
 		withLocal, _ := req.Options[filesWithLocalOptionName].(bool)
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}
@@ -439,7 +439,7 @@ Examples:
 
 		long, _ := req.Options[longOptionName].(bool)
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}

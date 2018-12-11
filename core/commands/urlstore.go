@@ -74,7 +74,7 @@ time.
 
 		useTrickledag, _ := req.Options[trickleOptionName].(bool)
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}

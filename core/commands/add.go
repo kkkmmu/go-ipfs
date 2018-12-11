@@ -168,7 +168,7 @@ You can now check what blocks have been created by:
 			return fmt.Errorf("unrecognized hash function: %s", strings.ToLower(hashFunStr))
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}

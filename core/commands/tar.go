@@ -44,7 +44,7 @@ represent it.
 			return err
 		}
 
-		enc, err := cmdenv.ProcCidBase(req)
+		enc, err := cmdenv.GetCidEncoder(req)
 		if err != nil {
 			return err
 		}
