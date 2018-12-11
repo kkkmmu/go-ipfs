@@ -50,7 +50,6 @@ The output is:
 	Options: []cmdkit.Option{
 		cmdkit.BoolOption(fileOrderOptionName, "sort the results based on the path of the backing file"),
 	},
-	PreRun: cmdenv.EnableCidBaseGlobal,
 	Run: func(req *cmds.Request, res cmds.ResponseEmitter, env cmds.Environment) error {
 		_, fs, err := getFilestore(env)
 		if err != nil {
@@ -80,14 +79,20 @@ The output is:
 		return nil
 	},
 	PostRun: cmds.PostRunMap{
-		cmds.CLI: streamResult(func(v interface{}, out io.Writer) nonFatalError {
-			r := v.(*filestore.ListRes)
-			if r.ErrorMsg != "" {
-				return nonFatalError(r.ErrorMsg)
+		cmds.CLI: func(res cmds.Response, re cmds.ResponseEmitter) error {
+			enc, err := cmdenv.ProcCidBase(res.Request())
+			if err != nil {
+				return err
 			}
-			fmt.Fprintf(out, "%s\n", r.FormatLong())
-			return ""
-		}),
+			return streamResult(func(v interface{}, out io.Writer) nonFatalError {
+				r := v.(*filestore.ListRes)
+				if r.ErrorMsg != "" {
+					return nonFatalError(r.ErrorMsg)
+				}
+				fmt.Fprintf(out, "%s\n", r.FormatLong(enc.Encode))
+				return ""
+			})(res, re)
+		},
 	},
 	Type: filestore.ListRes{},
 }
@@ -122,7 +127,6 @@ For ERROR entries the error will also be printed to stderr.
 	Options: []cmdkit.Option{
 		cmdkit.BoolOption(fileOrderOptionName, "verify the objects based on the order of the backing file"),
 	},
-	PreRun: cmdenv.EnableCidBaseGlobal,
 	Run: func(req *cmds.Request, res cmds.ResponseEmitter, env cmds.Environment) error {
 		_, fs, err := getFilestore(env)
 		if err != nil {
@@ -153,6 +157,11 @@ For ERROR entries the error will also be printed to stderr.
 	},
 	PostRun: cmds.PostRunMap{
 		cmds.CLI: func(res cmds.Response, re cmds.ResponseEmitter) error {
+			enc, err := cmdenv.ProcCidBase(res.Request())
+			if err != nil {
+				return err
+			}
+
 			for {
 				v, err := res.Next()
 				if err != nil {
@@ -170,7 +179,7 @@ For ERROR entries the error will also be printed to stderr.
 				if list.Status == filestore.StatusOtherError {
 					fmt.Fprintf(os.Stderr, "%s\n", list.ErrorMsg)
 				}
-				fmt.Fprintf(os.Stdout, "%s %s\n", list.Status.Format(), list.FormatLong())
+				fmt.Fprintf(os.Stdout, "%s %s\n", list.Status.Format(), list.FormatLong(enc.Encode))
 			}
 		},
 	},

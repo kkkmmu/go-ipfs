@@ -53,18 +53,6 @@ func CidBaseDefined(req *cmds.Request) bool {
 	return base != ""
 }
 
-// EnableCidBaseGlobal is a prerun function to set the default
-// (i.e. global) CID encoding based on the `cid-base` and
-// `output-cidv1` options.
-func EnableCidBaseGlobal(req *cmds.Request, env cmds.Environment) error {
-	enc, err := ProcCidBase(req)
-	if err != nil {
-		return err
-	}
-	cidenc.Default = enc
-	return nil
-}
-
 // CidEncoderFromPath creates a new encoder that is influenced from
 // the encoded Cid in a Path.  For CidV0 the multibase from the base
 // encoder is used and automatic upgrades are disabled.  For CidV1 the

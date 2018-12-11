@@ -9,7 +9,6 @@ import (
 	cid "gx/ipfs/QmR8BauakNcBa3RbE4nbQu76PDiJgoQgz8AJdhJuiU4TAw/go-cid"
 	blockstore "gx/ipfs/QmS2aqUZLJp8kF1ihE5rvDGE5LvmKDPnx32w9Z1BW9xLV5/go-ipfs-blockstore"
 	dshelp "gx/ipfs/QmauEMWPoSqggfpSDHMMXuDn12DTd7TaFBvn39eeurzKT2/go-ipfs-ds-help"
-	apicid "gx/ipfs/QmckgkstbdXagMTQ4e1DW2SzxGcjjudbqEvA5H2Rb7uvAT/go-cidutil/apicid"
 	ds "gx/ipfs/Qmf4xQhNomPNhrtZc67qSnfJSjxjXs9LWvknJtSXwimPrM/go-datastore"
 	dsq "gx/ipfs/Qmf4xQhNomPNhrtZc67qSnfJSjxjXs9LWvknJtSXwimPrM/go-datastore/query"
 )
@@ -61,21 +60,24 @@ func (s Status) Format() string {
 type ListRes struct {
 	Status   Status
 	ErrorMsg string
-	Key      apicid.Cid
+	Key      cid.Cid
 	FilePath string
 	Offset   uint64
 	Size     uint64
 }
 
-// FormatLong returns a human readable string for a ListRes object.
-func (r *ListRes) FormatLong() string {
+// FormatLong returns a human readable string for a ListRes object
+func (r *ListRes) FormatLong(enc func(cid.Cid) string) string {
+	if enc == nil {
+		enc = (cid.Cid).String
+	}
 	switch {
 	case !r.Key.Defined():
 		return "<corrupt key>"
 	case r.FilePath == "":
 		return r.Key.String()
 	default:
-		return fmt.Sprintf("%-50s %6d %s %d", r.Key, r.Size, r.FilePath, r.Offset)
+		return fmt.Sprintf("%-50s %6d %s %d", enc(r.Key), r.Size, r.FilePath, r.Offset)
 	}
 }
 
@@ -270,14 +272,14 @@ func mkListRes(c cid.Cid, d *pb.DataObj, err error) *ListRes {
 		return &ListRes{
 			Status:   status,
 			ErrorMsg: errorMsg,
-			Key:      apicid.Cid{Cid: c},
+			Key:      c,
 		}
 	}
 
 	return &ListRes{
 		Status:   status,
 		ErrorMsg: errorMsg,
-		Key:      apicid.Cid{Cid: c},
+		Key:      c,
 		FilePath: d.FilePath,
 		Size:     d.Size_,
 		Offset:   d.Offset,
