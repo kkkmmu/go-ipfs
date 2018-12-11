@@ -14,6 +14,17 @@ var OptionOutputCidV1 = cmdkit.BoolOption("output-cidv1", "Upgrade CID version 0
 // ProcCidBase processes the `cid-base` and `output-cidv1` options and
 // returns a encoder to use based on those parameters.
 func ProcCidBase(req *cmds.Request) (cidenc.Encoder, error) {
+	return procCidBase(req, true)
+}
+
+// ProcCidBaseNoUpgrade is like ProcCidBase but meant to be used by
+// lower level commands.  It differs from ProcCidBase in that CIDv0
+// and not, by default, auto-upgraded to CIDv1.
+func ProcCidBaseLowLevel(req *cmds.Request) (cidenc.Encoder, error) {
+	return procCidBase(req, false)
+}
+
+func procCidBase(req *cmds.Request, autoUpgrade bool) (cidenc.Encoder, error) {
 	base, _ := req.Options["cid-base"].(string)
 	upgrade, upgradeDefined := req.Options["output-cidv1"].(bool)
 
@@ -25,7 +36,9 @@ func ProcCidBase(req *cmds.Request) (cidenc.Encoder, error) {
 		if err != nil {
 			return e, err
 		}
-		e.Upgrade = true
+		if autoUpgrade {
+			e.Upgrade = true
+		}
 	}
 
 	if upgradeDefined {
